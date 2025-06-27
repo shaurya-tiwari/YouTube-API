@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    background-color: rgb(0, 0, 0);
+    
     color: rgb(9, 9, 9);
     display: flex;
     justify-content: center;
