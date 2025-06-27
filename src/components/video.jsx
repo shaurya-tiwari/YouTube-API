@@ -7,6 +7,9 @@ function Vdo() {
     const [videos, setVideos] = useState([]);
     const [search, setSearch] = useState('');
 
+
+    const apiKey = import.meta.env.VITE_API_KEY;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const searchQuery = e.target.elements.search.value;
@@ -14,7 +17,7 @@ function Vdo() {
         if (searchQuery.trim() === '') {
             return;
         }
-        const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyChn06oSaJM3OI4MF-cr7pCqZ5AIyH-HBQ&q=${searchQuery}&part=snippet&type=video&maxResults=20`;
+        const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${searchQuery}&part=snippet&type=video&maxResults=20`;
 
         try {
             const response = await fetch(apiUrl);

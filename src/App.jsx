@@ -7,7 +7,7 @@ export default function App() {
 
   // 🌐 Fetch videos from YouTube API
   const fetchVideos = async (query) => {
-    const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${import.meta.env.VITE_APIkey}&q=${query}&part=snippet&type=video&maxResults=12&videoDuration=medium`;
+    const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${import.meta.env.VITE_API_KEY}&q=${query}&part=snippet&type=video&maxResults=12&videoDuration=medium`;
 
     try {
       const response = await fetch(apiUrl);
@@ -104,9 +104,8 @@ export default function App() {
               />
               <div className="w-10 h-5 bg-gray-300 rounded-full shadow-inner dark:bg-gray-700"></div>
               <div
-                className={`absolute w-4 h-4 bg-white rounded-full shadow top-0.5 left-0.5 transition-transform ${
-                  darkMode ? 'translate-x-5' : ''
-                }`}
+                className={`absolute w-4 h-4 bg-white rounded-full shadow top-0.5 left-0.5 transition-transform ${darkMode ? 'translate-x-5' : ''
+                  }`}
               ></div>
             </div>
             <span className="ml-3 text-sm">{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
