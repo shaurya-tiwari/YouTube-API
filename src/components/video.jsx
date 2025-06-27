@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FcMusic } from "react-icons/fc";
 import { BsSearch } from "react-icons/bs";
 
