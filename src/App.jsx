@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import PinterestGrid from './components/PinterestGrid';
+import VideoGrid from './components/VideoGrid';
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("theme") === "dark");
-  const [videos, setVideos] = useState([]);
+  const [videoData, setVideoData] = useState([]);
+  const [viewMode, setViewMode] = useState('pinterest');
   const [search, setSearch] = useState('');
 
   // 🌐 Fetch videos from YouTube API
@@ -13,31 +16,13 @@ export default function App() {
       const response = await fetch(apiUrl);
       const data = await response.json();
       if (data?.items) {
-        const videoElements = data.items.map((item) => {
-          const videoId = item.id.videoId;
-          const title = item.snippet.title;
-          const channel = item.snippet.channelTitle;
-          const thumbnail = item.snippet.thumbnails.medium.url;
-
-          return (
-            <div key={videoId} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-2">
-              <a
-                href={`https://www.youtube.com/watch?v=${videoId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src={thumbnail}
-                  alt={title}
-                  className="w-full h-48 object-cover rounded"
-                />
-              </a>
-              <h3 className="mt-2 font-semibold text-sm">{title}</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{channel}</p>
-            </div>
-          );
-        });
-        setVideos(videoElements);
+        const rawVideoData = data.items.map((item) => ({
+          videoId: item.id.videoId,
+          title: item.snippet.title,
+          channel: item.snippet.channelTitle,
+          thumbnail: item.snippet.thumbnails.medium.url,
+        }));
+        setVideoData(rawVideoData);
       }
     } catch (err) {
       console.error("API Error:", err);
@@ -71,12 +56,18 @@ export default function App() {
 
   return (
     <>
-      <div className="min-h-screen text-black transition-all bg-white w-screen dark:bg-gray-900 dark:text-white">
+      <div className="min-h-screen text-black transition-all bg-gradient-to-br from-gray-50 to-white w-screen dark:from-gray-900 dark:to-gray-800 dark:text-white">
         {/* Header */}
-        <header className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 p-4 border-b dark:border-gray-700">
-          <a href="/">
-            <h1 className="text-xl font-bold text-[#f7026d]">Mini Youtube</h1>
-          </a>
+        <header className="sticky top-0 z-40 backdrop-blur-lg bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 p-4 max-w-7xl mx-auto">
+            <a href="/" className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-[#f7026d] to-red-600 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-[#f7026d] to-red-600 bg-clip-text text-transparent">Mini Youtube</h1>
+            </a>
 
           {/* Search */}
           <form onSubmit={handleSubmit} className="flex flex-wrap items-center gap-2 flex-1 md:max-w-xl">
@@ -92,6 +83,32 @@ export default function App() {
               Search
             </button>
           </form>
+
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setViewMode('pinterest')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                viewMode === 'pinterest'
+                  ? 'bg-[#f7026d] text-white shadow-md'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+              title="Pinterest Style Grid"
+            >
+              📌 Pinterest
+            </button>
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                viewMode === 'grid'
+                  ? 'bg-[#f7026d] text-white shadow-md'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+              title="Standard Grid"
+            >
+              ⬜ Grid
+            </button>
+          </div>
 
           {/* Toggle */}
           <label className="flex items-center cursor-pointer">
@@ -110,16 +127,15 @@ export default function App() {
             </div>
             <span className="ml-3 text-sm">{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
           </label>
+          </div>
         </header>
 
         {/* Main Content */}
-        <main className="p-4">
-          <h2 className="text-lg font-semibold mb-4">Random Recommended Videos</h2>
-          {/* Video Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {videos}
-          </div>
-        </main>
+        {viewMode === 'pinterest' ? (
+          <PinterestGrid videoData={videoData} />
+        ) : (
+          <VideoGrid videoData={videoData} />
+        )}
       </div>
     </>
   );
