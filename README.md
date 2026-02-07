@@ -9,7 +9,7 @@
 
 A modern, responsive YouTube video search and discovery platform with stunning UI/UX, featuring Pinterest-style masonry layout and traditional grid views.
 
-[Live Demo](#) • [Report Bug](https://github.com/shaurya-tiwari/YouTube-API/issues) • [Request Feature](https://github.com/shaurya-tiwari/YouTube-API/issues)
+[Live Demo](https://you-tube-api-rose.vercel.app/) • [Report Bug](https://github.com/shaurya-tiwari/YouTube-API/issues) • [Request Feature](https://github.com/shaurya-tiwari/YouTube-API/issues)
 
 </div>
 
