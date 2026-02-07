@@ -146,19 +146,6 @@ YouTube-API/
 
 ---
 
-## 🎨 Screenshots
-
-### Light Mode - Pinterest Grid
-<div align="center">
-  <img src="https://via.placeholder.com/800x450/f7026d/ffffff?text=Pinterest+Grid+View" alt="Pinterest Grid" />
-</div>
-
-### Dark Mode - Video Player
-<div align="center">
-  <img src="https://via.placeholder.com/800x450/1f2937/ffffff?text=Video+Player+Modal" alt="Video Player" />
-</div>
-
----
 
 ## 📜 Available Scripts
 
